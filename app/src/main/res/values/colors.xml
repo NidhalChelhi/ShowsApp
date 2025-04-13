@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand color -->
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimaryLight">#BB86FC</color>
+    <color name="colorAccent">#03DAC6</color>
+
+    <!-- Text colors -->
+    <color name="textPrimary">#212121</color>
+    <color name="textSecondary">#757575</color>
+    <color name="textOnPrimary">#FFFFFF</color>
+
+    <!-- Background colors -->
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="error">#B00020</color>
+
+    <!-- Grayscale -->
+    <color name="white">#FFFFFF</color>
+    <color name="light_gray">#EEEEEE</color>
+    <color name="gray">#9E9E9E</color>
+    <color name="dark_gray">#424242</color>
+    <color name="black">#000000</color>
+
+    <!-- Status colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FFC107</color>
+    <color name="danger">#F44336</color>
+
+    <!-- Show category colors -->
+    <color name="category_music">#3F51B5</color>
+    <color name="category_dance">#E91E63</color>
+    <color name="category_comedy">#FF9800</color>
+    <color name="category_theater">#4CAF50</color>
+    <color name="category_magic">#9C27B0</color>
+</resources>

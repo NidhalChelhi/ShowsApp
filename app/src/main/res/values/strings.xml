@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ShowsApp</string>
+    <string name="show_image">Show image</string>
+    <string name="reserve_now">Reserve Now</string>
+    <string name="duration_format">Duration: %s</string>
+    <string name="seats_available_format">Seats available: %d</string>
+</resources>
