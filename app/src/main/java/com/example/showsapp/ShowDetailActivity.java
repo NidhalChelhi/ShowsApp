@@ -43,6 +43,7 @@ public class ShowDetailActivity extends AppCompatActivity {
             TextView titleTextView = findViewById(R.id.titleTextView);
             TextView categoryTextView = findViewById(R.id.categoryTextView);
             TextView priceTextView = findViewById(R.id.priceTextView);
+            TextView ratingTextView = findViewById(R.id.ratingTextView);
             TextView dateTextView = findViewById(R.id.dateTextView);
             TextView timeTextView = findViewById(R.id.timeTextView);
             TextView venueTextView = findViewById(R.id.venueTextView);
@@ -52,7 +53,6 @@ public class ShowDetailActivity extends AppCompatActivity {
             Button reserveButton = findViewById(R.id.reserveButton);
 
             // Load show image
-// Load show image with better error handling
             Glide.with(this)
                     .load(show.getImageUrl())
                     .placeholder(R.drawable.placeholder_image)
@@ -71,6 +71,9 @@ public class ShowDetailActivity extends AppCompatActivity {
             priceTextView.setText(show.getFormattedPrice());
             priceTextView.setTextSize(20);
             priceTextView.setTextColor(getResources().getColor(R.color.purple_500));
+
+            ratingTextView.setText(show.getFormattedRating());
+
 
             // Format date
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault());

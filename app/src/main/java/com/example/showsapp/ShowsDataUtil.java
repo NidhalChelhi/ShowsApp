@@ -21,7 +21,8 @@ public class ShowsDataUtil {
                 "Grand Concert Hall",
                 "2 hours 30 minutes",
                 150,
-                true
+                true,
+                3.8
         ));
 
         shows.add(new Show(
@@ -30,17 +31,17 @@ public class ShowsDataUtil {
                 "Dance",
                 "Modern dance performance by award-winning troupe",
                 "Experience the cutting edge of contemporary dance...",
-                "https://images.unsplash.com/photo-1547153760-18fc86324498?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80",
+                "https://www.clistudios.com/wp-content/uploads/2021/08/jaquel-knight-hip-hop-scaled.jpeg",
                 39.99,
                 new Date(System.currentTimeMillis() + 86400000 * 10),
                 "20:00",
                 "City Theater",
                 "1 hour 45 minutes",
                 85,
-                false
+                false,
+                4.2
         ));
 
-        // Add more shows with real images...
         return shows;
     }
 }

@@ -67,6 +67,8 @@
             holder.timeTextView.setText(show.getTime());
             holder.seatsTextView.setText(String.format(Locale.getDefault(), "%d seats", show.getAvailableSeats()));
 
+            holder.ratingTextView.setText(show.getFormattedRating());
+
             // Set click listener
             holder.itemView.setOnClickListener(v -> listener.onShowClick(show));
         }
@@ -85,6 +87,8 @@
             TextView dateTextView;
             TextView timeTextView;
             TextView seatsTextView;
+            TextView ratingTextView; // Add this line
+
 
             public ShowViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -96,6 +100,8 @@
                 dateTextView = itemView.findViewById(R.id.dateTextView);
                 timeTextView = itemView.findViewById(R.id.timeTextView);
                 seatsTextView = itemView.findViewById(R.id.seatsTextView);
+                ratingTextView = itemView.findViewById(R.id.ratingTextView); // Add this line
+
             }
         }
     }

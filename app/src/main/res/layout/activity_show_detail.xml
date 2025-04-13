@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,8 +15,8 @@
             android:id="@+id/showImage"
             android:layout_width="match_parent"
             android:layout_height="280dp"
-            android:scaleType="centerCrop"
-            android:background="@color/gray_200"/>
+            android:background="@color/gray_200"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,9 +28,9 @@
                 android:id="@+id/titleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
                 android:textColor="@color/black"
-                android:textStyle="bold"/>
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/categoryTextView"
@@ -40,43 +40,44 @@
                 android:background="@drawable/bg_category_chip"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
-                android:textSize="14sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/priceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
                     android:textColor="@color/purple_500"
-                    android:textStyle="bold"/>
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="16dp"
                     android:layout_marginHorizontal="12dp"
-                    android:background="@color/gray_400"/>
+                    android:background="@color/gray_400" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="4dp"
-                    app:tint="@color/gray_600"
-                    app:srcCompat="@drawable/ic_star"/>
+                    app:srcCompat="@drawable/ic_star"
+                    app:tint="@color/gray_600" />
 
                 <TextView
+                    android:id="@+id/ratingTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4.8"
+                    android:textColor="@color/gray_600"
                     android:textSize="14sp"
-                    android:textColor="@color/gray_600"/>
+                    />
             </LinearLayout>
 
             <!-- Details section -->
@@ -85,31 +86,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Details"
+                android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textStyle="bold" />
 
             <!-- Date -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="8dp"
-                    app:tint="@color/gray_600"
-                    app:srcCompat="@drawable/ic_calendar"/>
+                    app:srcCompat="@drawable/ic_calendar"
+                    app:tint="@color/gray_600" />
 
                 <TextView
                     android:id="@+id/dateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray_600"/>
+                    android:textColor="@color/gray_600"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <!-- Time -->
@@ -117,22 +118,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="8dp"
-                    app:tint="@color/gray_600"
-                    app:srcCompat="@drawable/ic_time"/>
+                    app:srcCompat="@drawable/ic_time"
+                    app:tint="@color/gray_600" />
 
                 <TextView
                     android:id="@+id/timeTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray_600"/>
+                    android:textColor="@color/gray_600"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <!-- Venue -->
@@ -140,22 +141,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="8dp"
-                    app:tint="@color/gray_600"
-                    app:srcCompat="@drawable/ic_location"/>
+                    app:srcCompat="@drawable/ic_location"
+                    app:tint="@color/gray_600" />
 
                 <TextView
                     android:id="@+id/venueTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray_600"/>
+                    android:textColor="@color/gray_600"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <!-- Duration -->
@@ -163,22 +164,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="8dp"
-                    app:tint="@color/gray_600"
-                    app:srcCompat="@drawable/ic_duration"/>
+                    app:srcCompat="@drawable/ic_duration"
+                    app:tint="@color/gray_600" />
 
                 <TextView
                     android:id="@+id/durationTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray_600"/>
+                    android:textColor="@color/gray_600"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <!-- Seats -->
@@ -186,22 +187,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="8dp"
-                    app:tint="@color/gray_600"
-                    app:srcCompat="@drawable/ic_seat"/>
+                    app:srcCompat="@drawable/ic_seat"
+                    app:tint="@color/gray_600" />
 
                 <TextView
                     android:id="@+id/seatsTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray_600"/>
+                    android:textColor="@color/gray_600"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <!-- About section -->
@@ -210,18 +211,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="About"
+                android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/descriptionTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.25"
                 android:textColor="@color/gray_600"
-                android:lineSpacingMultiplier="1.25"/>
+                android:textSize="16sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/reserveButton"
@@ -229,10 +230,10 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="32dp"
                 android:text="Reserve Now"
-                android:textSize="16sp"
                 android:textColor="@color/white"
+                android:textSize="16sp"
                 app:backgroundTint="@color/purple_500"
-                app:cornerRadius="24dp"/>
+                app:cornerRadius="24dp" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

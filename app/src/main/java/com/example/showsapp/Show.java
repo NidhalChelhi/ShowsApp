@@ -17,11 +17,13 @@ public class Show {
     private int availableSeats;
     private boolean isPopular;
 
+    private double rating;
+
     // Constructor
     public Show(String id, String title, String category, String shortDescription,
                 String fullDescription, String imageUrl, double price, Date date,
                 String time, String venue, String duration, int availableSeats,
-                boolean isPopular) {
+                boolean isPopular, double rating) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -35,6 +37,7 @@ public class Show {
         this.duration = duration;
         this.availableSeats = availableSeats;
         this.isPopular = isPopular;
+        this.rating = rating;
     }
 
     // Getters and Setters
@@ -142,14 +145,25 @@ public class Show {
         isPopular = popular;
     }
 
+    public double getRating(){
+        return rating;
+    }
+
+    public void setRating(double rating){
+        this.rating = rating;
+    }
+
     // Helper method to get formatted price
     public String getFormattedPrice() {
         return String.format("$%.2f", price);
     }
 
+    public String getFormattedRating() {
+        return String.format("%.1f", rating);
+    }
+
     // Helper method to get date as string (you can customize the format)
     public String getFormattedDate() {
-        // SimpleDateFormat would be better here, but keeping it simple for now
         return date.toString();
     }
 }
