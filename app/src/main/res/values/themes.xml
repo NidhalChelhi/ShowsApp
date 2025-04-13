@@ -31,6 +31,9 @@
         <item name="textAppearanceHeadlineLarge">@style/TextAppearance.ShowsApp.Headline.Large</item>
         <item name="textAppearanceHeadlineMedium">@style/TextAppearance.ShowsApp.Headline.Medium</item>
         <item name="textAppearanceHeadlineSmall">@style/TextAppearance.ShowsApp.Headline.Small</item>
+
+
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <!-- Button style -->
