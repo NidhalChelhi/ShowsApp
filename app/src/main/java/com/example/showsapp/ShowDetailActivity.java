@@ -2,11 +2,15 @@ package com.example.showsapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +20,9 @@ public class ShowDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         setContentView(R.layout.activity_show_detail);
 
         // Get the show ID from the intent
@@ -38,11 +45,11 @@ public class ShowDetailActivity extends AppCompatActivity {
             TextView descriptionTextView = findViewById(R.id.descriptionTextView);
             Button reserveButton = findViewById(R.id.reserveButton);
 
-            // Load show image (we'll use Glide - add dependency in next step)
+            // Load show image
             if (show.getImageUrl() != null && !show.getImageUrl().isEmpty()) {
                 Glide.with(this)
                         .load(show.getImageUrl())
-                        .placeholder(R.color.light_gray)
+                        .placeholder(R.color.surface)
                         .into(showImage);
             }
 
@@ -66,9 +73,19 @@ public class ShowDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, ReservationActivity.class);
                 intent.putExtra("SHOW_ID", show.getId());
                 intent.putExtra("SHOW_TITLE", show.getTitle());
+                intent.putExtra("AVAILABLE_SEATS", show.getAvailableSeats());
                 startActivity(intent);
             });
         }
+        }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private Show findShowById(String id) {

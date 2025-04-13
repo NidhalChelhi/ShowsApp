@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/roboto_bold"/>
 
         <!-- Personal Info -->
         <TextView
@@ -26,7 +27,8 @@
             android:text="Personal Information"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/roboto_medium"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -39,7 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Full Name"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName"
+                android:fontFamily="@font/roboto_regular"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -53,7 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
-                android:inputType="textEmailAddress"/>
+                android:inputType="textEmailAddress"
+                android:fontFamily="@font/roboto_regular"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -67,62 +71,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Phone Number"
-                android:inputType="phone"/>
+                android:inputType="phone"
+                android:fontFamily="@font/roboto_regular"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Coordinates -->
+        <!-- Seats -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location Coordinates"
+            android:text="Seat Selection"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/roboto_medium"/>
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="16dp"
+            app:errorEnabled="true">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etSeats"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etLatitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Latitude"
-                    android:inputType="numberDecimal|numberSigned"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etLongitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Longitude"
-                    android:inputType="numberDecimal|numberSigned"/>
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <!-- Get Location Button -->
-        <Button
-            android:id="@+id/btnGetLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Get Current Location"
-            android:layout_marginBottom="16dp"/>
+                android:hint="Number of Seats"
+                android:inputType="number"
+                android:fontFamily="@font/roboto_regular"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Submit Button -->
         <Button
@@ -131,7 +108,7 @@
             android:layout_height="wrap_content"
             android:text="Submit Reservation"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_medium"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
-
     </LinearLayout>
 </ScrollView>

@@ -5,24 +5,21 @@ public class Reservation {
     private String fullName;
     private String email;
     private String phone;
-    private double latitude;
-    private double longitude;
+    private int numberOfSeats;
 
     public Reservation(String showId, String fullName, String email,
-                       String phone, double latitude, double longitude) {
+                       String phone, int numberOfSeats) {
         this.showId = showId;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.numberOfSeats = numberOfSeats;
     }
 
-    // Getters and setters
+    // Getters
     public String getShowId() { return showId; }
     public String getFullName() { return fullName; }
     public String getEmail() { return email; }
     public String getPhone() { return phone; }
-    public double getLatitude() { return latitude; }
-    public double getLongitude() { return longitude; }
+    public int getNumberOfSeats() { return numberOfSeats; }
 }

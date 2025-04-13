@@ -1,9 +1,90 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.ShowsApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Base light theme only -->
+    <style name="Theme.ShowsApp" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Color palette -->
+        <item name="colorPrimary">#6750A4</item>
+        <item name="colorPrimaryContainer">#EADDFF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#625B71</item>
+        <item name="colorSecondaryContainer">#E8DEF8</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSurface">#FFFBFE</item>
+        <item name="colorOnSurface">#1C1B1F</item>
+        <item name="colorSurfaceVariant">#E7E0EC</item>
+        <item name="colorOnSurfaceVariant">#49454F</item>
+        <item name="colorError">#B3261E</item>
+        <item name="colorOnError">#FFFFFF</item>
+        <item name="colorOutline">#79747E</item>
+
+        <!-- Typography -->
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.ShowsApp.Headline.Large</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.ShowsApp.Title.Large</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.ShowsApp.Title.Medium</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.ShowsApp.Body.Large</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.ShowsApp.Body.Medium</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.ShowsApp.Label.Large</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.ShowsApp.Label.Medium</item>
     </style>
 
-    <style name="Theme.ShowsApp" parent="Base.Theme.ShowsApp" />
+    <!-- Text appearances -->
+    <style name="TextAppearance.ShowsApp.Headline.Large" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.ShowsApp.Title.Large" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.ShowsApp.Title.Medium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.ShowsApp.Body.Large" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:lineSpacingMultiplier">1.25</item>
+    </style>
+
+    <style name="TextAppearance.ShowsApp.Body.Medium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.ShowsApp.Label.Large" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.ShowsApp.Label.Medium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- Component styles -->
+
+    <style name="Widget.ShowsApp.Button" parent="Widget.Material3.Button">
+        <item name="android:textAppearance">@style/TextAppearance.ShowsApp.Label.Large</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.ShowsApp.Large</item>
+    </style>
+
+    <!-- Shape appearances -->
+    <style name="ShapeAppearance.ShowsApp.Large" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="ShapeAppearance.ShowsApp.Medium" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
 </resources>
