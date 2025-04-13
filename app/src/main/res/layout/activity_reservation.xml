@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?attr/colorSurface">
+    android:background="@color/white">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:titleTextColor="?attr/colorOnPrimary"
+        android:background="@color/purple_500"
+        app:titleTextColor="@color/white"
         app:navigationIcon="?attr/homeAsUpIndicator"/>
 
     <ScrollView
@@ -31,8 +31,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/roboto_bold"/>
+                android:textColor="@color/black"
+                android:layout_marginBottom="16dp"/>
 
             <!-- Personal Info -->
             <TextView
@@ -41,8 +41,8 @@
                 android:text="Personal Information"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/roboto_medium"/>
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -55,8 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Full Name"
-                    android:inputType="textPersonName"
-                    android:fontFamily="@font/roboto_regular"/>
+                    android:inputType="textPersonName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -70,8 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Email"
-                    android:inputType="textEmailAddress"
-                    android:fontFamily="@font/roboto_regular"/>
+                    android:inputType="textEmailAddress"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -85,8 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Phone Number"
-                    android:inputType="phone"
-                    android:fontFamily="@font/roboto_regular"/>
+                    android:inputType="phone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Seats -->
@@ -96,9 +93,9 @@
                 android:text="Seat Selection"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/roboto_medium"/>
+                android:layout_marginBottom="8dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -111,8 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Number of Seats"
-                    android:inputType="number"
-                    android:fontFamily="@font/roboto_regular"/>
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Submit Button -->
@@ -122,8 +118,8 @@
                 android:layout_height="wrap_content"
                 android:text="Submit Reservation"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/roboto_medium"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+                android:backgroundTint="@color/purple_500"
+                android:textColor="@color/white"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

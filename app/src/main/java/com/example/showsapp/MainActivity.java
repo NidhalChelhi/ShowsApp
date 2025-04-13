@@ -32,9 +32,7 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
         // Initialize toolbar
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Upcoming Shows");
-        }
+        toolbar.setTitle("Upcoming Shows");
 
         // Initialize RecyclerView
         showsRecyclerView = findViewById(R.id.showsRecyclerView);
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
         // Setup search view
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Search shows...");
+        searchView.setQueryHint(getString(R.string.search_hint));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -92,10 +90,10 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
         boolean[] checkedItems = new boolean[categoryArray.length];
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Filter by Category")
+        builder.setTitle(R.string.filter_title)
                 .setMultiChoiceItems(categoryArray, checkedItems, (dialog, which, isChecked) -> {
-                    checkedItems[which] = isChecked;
-                })
+            checkedItems[which] = isChecked;
+        })
                 .setPositiveButton("Apply", (dialog, which) -> {
                     List<String> selectedCategories = new ArrayList<>();
                     for (int i = 0; i < checkedItems.length; i++) {

@@ -24,9 +24,10 @@ public class ShowDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_detail);
 
-        // Initialize toolbar
+        // Initialize toolbar - ADD THIS
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Show Details");
@@ -51,25 +52,45 @@ public class ShowDetailActivity extends AppCompatActivity {
             Button reserveButton = findViewById(R.id.reserveButton);
 
             // Load show image
+// Load show image with better error handling
             Glide.with(this)
                     .load(show.getImageUrl())
                     .placeholder(R.drawable.placeholder_image)
+                    .error(R.drawable.placeholder_image)  // Add an error placeholder
                     .into(showImage);
-
-            // Set text values
+            // Set text values with proper styling
             titleTextView.setText(show.getTitle());
+            titleTextView.setTextSize(24);
+            titleTextView.setTextColor(getResources().getColor(R.color.black));
+
             categoryTextView.setText(show.getCategory());
+            categoryTextView.setTextSize(14);
+            categoryTextView.setBackgroundResource(R.drawable.bg_category_chip);
+            categoryTextView.setTextColor(getResources().getColor(R.color.white));
+
             priceTextView.setText(show.getFormattedPrice());
+            priceTextView.setTextSize(20);
+            priceTextView.setTextColor(getResources().getColor(R.color.purple_500));
 
             // Format date
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault());
             dateTextView.setText(dateFormat.format(show.getDate()));
+            dateTextView.setTextSize(16);
 
             timeTextView.setText(show.getTime());
+            timeTextView.setTextSize(16);
+
             venueTextView.setText(show.getVenue());
-            durationTextView.setText(getString(R.string.duration_format, show.getDuration()));
-            seatsTextView.setText(getString(R.string.seats_available_format, show.getAvailableSeats()));
+            venueTextView.setTextSize(16);
+
+            durationTextView.setText(String.format("Duration: %s", show.getDuration()));
+            durationTextView.setTextSize(16);
+
+            seatsTextView.setText(String.format("Seats available: %d", show.getAvailableSeats()));
+            seatsTextView.setTextSize(16);
+
             descriptionTextView.setText(show.getFullDescription());
+            descriptionTextView.setTextSize(16);
 
             // Set up reserve button
             reserveButton.setOnClickListener(v -> {
