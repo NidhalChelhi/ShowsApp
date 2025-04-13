@@ -4,4 +4,6 @@
     <string name="reserve_now">Reserve Now</string>
     <string name="duration_format">Duration: %s</string>
     <string name="seats_available_format">Seats available: %d</string>
+    <string name="search_hint">Search shows...</string>
+    <string name="filter_title">Filter by Category</string>
 </resources>

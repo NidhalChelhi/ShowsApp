@@ -1,17 +1,20 @@
 package com.example.showsapp;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.android.material.textfield.TextInputEditText;
 
 public class ReservationActivity extends AppCompatActivity {
 
     private TextInputEditText etFullName, etEmail, etPhone, etSeats;
-    private Button btnSubmit;
     private String showId, showTitle;
     private int availableSeats;
 
@@ -20,9 +23,12 @@ public class ReservationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation);
 
-        // Enable back button in action bar
+        // Initialize toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Make Reservation");
         }
 
         // Initialize views
@@ -30,7 +36,7 @@ public class ReservationActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
         etSeats = findViewById(R.id.etSeats);
-        btnSubmit = findViewById(R.id.btnSubmit);
+        Button btnSubmit = findViewById(R.id.btnSubmit);
         TextView tvShowTitle = findViewById(R.id.showTitle);
 
         // Get show details from intent
@@ -42,8 +48,13 @@ public class ReservationActivity extends AppCompatActivity {
             tvShowTitle.setText("Reservation for: " + showTitle);
         }
 
-        // Set up submit button
         btnSubmit.setOnClickListener(v -> submitReservation());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
+        return true;
     }
 
     @Override
@@ -56,7 +67,6 @@ public class ReservationActivity extends AppCompatActivity {
     }
 
     private void submitReservation() {
-        // Validate inputs
         String fullName = etFullName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
@@ -93,7 +103,6 @@ public class ReservationActivity extends AppCompatActivity {
             return;
         }
 
-        // Create reservation object
         Reservation reservation = new Reservation(
                 showId,
                 fullName,
@@ -102,7 +111,6 @@ public class ReservationActivity extends AppCompatActivity {
                 numberOfSeats
         );
 
-        // Show success message
         Toast.makeText(this, "Reservation successful for " + numberOfSeats + " seats!", Toast.LENGTH_LONG).show();
         finish();
     }

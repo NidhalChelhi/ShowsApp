@@ -12,12 +12,18 @@
 
     <!-- Error colors -->
     <color name="error">#B3261E</color>
+    <color name="on_error">#FFFFFF</color>
 
     <!-- Outline -->
     <color name="outline">#79747E</color>
 
-    <!-- Category colors -->
+    <!-- Category chips -->
     <color name="category_music">#6750A4</color>
     <color name="category_dance">#B3261E</color>
-    <!-- ... keep other colors as needed ... -->
+    <color name="category_comedy">#7D5260</color>
+    <color name="category_theater">#006C4C</color>
+
+    <!-- Text colors -->
+    <color name="text_primary">?attr/colorOnSurface</color>
+    <color name="text_secondary">?attr/colorOnSurfaceVariant</color>
 </resources>

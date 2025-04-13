@@ -21,9 +21,8 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnShowClickListener {
     private RecyclerView showsRecyclerView;
     private ShowsAdapter showsAdapter;
-    private List<Show> allShows; // Store all shows
+    private List<Show> allShows;
     private SearchView searchView;
-    private MaterialToolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +30,11 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
         setContentView(R.layout.activity_main);
 
         // Initialize toolbar
-        toolbar = findViewById(R.id.toolbar);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Upcoming Shows");
+        }
 
         // Initialize RecyclerView
         showsRecyclerView = findViewById(R.id.showsRecyclerView);
@@ -81,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
     }
 
     private void showFilterDialog() {
-        // Get unique categories
         Set<String> categories = new HashSet<>();
         for (Show show : allShows) {
             categories.add(show.getCategory());
@@ -117,13 +118,10 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
         List<Show> filteredShows = new ArrayList<>();
 
         for (Show show : allShows) {
-            // Filter by search query
             boolean matchesSearch = query.isEmpty() ||
                     show.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                    show.getShortDescription().toLowerCase().contains(query.toLowerCase()) ||
-                    show.getFullDescription().toLowerCase().contains(query.toLowerCase());
+                    show.getShortDescription().toLowerCase().contains(query.toLowerCase());
 
-            // Filter by category
             boolean matchesCategory = categories == null ||
                     categories.contains(show.getCategory());
 
@@ -137,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
 
     @Override
     public void onShowClick(Show show) {
-        // Navigate to show details activity
         Intent intent = new Intent(this, ShowDetailActivity.class);
         intent.putExtra("SHOW_ID", show.getId());
         startActivity(intent);

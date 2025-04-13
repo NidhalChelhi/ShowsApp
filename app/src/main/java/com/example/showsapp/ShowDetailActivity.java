@@ -2,12 +2,14 @@ package com.example.showsapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 
@@ -20,15 +22,18 @@ public class ShowDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show_detail);
+
+        // Initialize toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Show Details");
         }
-        setContentView(R.layout.activity_show_detail);
 
         // Get the show ID from the intent
         String showId = getIntent().getStringExtra("SHOW_ID");
-
-        // Find the show in our dummy data
         Show show = findShowById(showId);
 
         if (show != null) {
@@ -46,12 +51,10 @@ public class ShowDetailActivity extends AppCompatActivity {
             Button reserveButton = findViewById(R.id.reserveButton);
 
             // Load show image
-            if (show.getImageUrl() != null && !show.getImageUrl().isEmpty()) {
-                Glide.with(this)
-                        .load(show.getImageUrl())
-                        .placeholder(R.color.surface)
-                        .into(showImage);
-            }
+            Glide.with(this)
+                    .load(show.getImageUrl())
+                    .placeholder(R.drawable.placeholder_image)
+                    .into(showImage);
 
             // Set text values
             titleTextView.setText(show.getTitle());
@@ -77,7 +80,13 @@ public class ShowDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             });
         }
-        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
