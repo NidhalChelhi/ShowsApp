@@ -56,7 +56,7 @@ public class ShowDetailActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(show.getImageUrl())
                     .placeholder(R.drawable.placeholder_image)
-                    .error(R.drawable.placeholder_image)  // Add an error placeholder
+                    .error(R.drawable.placeholder_image)
                     .into(showImage);
             // Set text values with proper styling
             titleTextView.setText(show.getTitle());

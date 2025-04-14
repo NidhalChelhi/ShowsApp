@@ -4,6 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RatingBar;
+import android.widget.SeekBar;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize toolbar
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -79,35 +87,161 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
     }
 
     private void showFilterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_advanced_filters, null);
+        builder.setView(dialogView);
+
+        // Initialize all filter views
+        ChipGroup categoryChipGroup = dialogView.findViewById(R.id.categoryChipGroup);
+        SeekBar priceSeekBar = dialogView.findViewById(R.id.priceSeekBar);
+        TextView priceRangeText = dialogView.findViewById(R.id.priceRangeText);
+        RatingBar ratingFilter = dialogView.findViewById(R.id.ratingFilter);
+        Switch upcomingOnlySwitch = dialogView.findViewById(R.id.upcomingOnlySwitch);
+        SeekBar durationSeekBar = dialogView.findViewById(R.id.durationSeekBar);
+        TextView durationText = dialogView.findViewById(R.id.durationText);
+        Switch popularOnlySwitch = dialogView.findViewById(R.id.popularOnlySwitch);
+        Switch availableSeatsSwitch = dialogView.findViewById(R.id.availableSeatsSwitch);
+
+        // Price filter setup
+        priceSeekBar.setMax(100); // $100 max
+        priceSeekBar.setProgress(100);
+        priceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                priceRangeText.setText("Max Price: $" + progress);
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        // Duration filter setup
+        durationSeekBar.setMax(240); // 240 minutes (4 hours)
+        durationSeekBar.setProgress(240);
+        durationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                durationText.setText("Max Duration: " + progress + " mins");
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        // Populate categories
         Set<String> categories = new HashSet<>();
         for (Show show : allShows) {
             categories.add(show.getCategory());
         }
+        for (String category : categories) {
+            Chip chip = new Chip(this);
+            chip.setText(category);
+            chip.setCheckable(true);
+            categoryChipGroup.addView(chip);
+        }
 
-        String[] categoryArray = categories.toArray(new String[0]);
-        boolean[] checkedItems = new boolean[categoryArray.length];
+        builder.setPositiveButton("Apply", (dialog, which) -> {
+            // Get selected categories
+            List<String> selectedCategories = new ArrayList<>();
+            for (int i = 0; i < categoryChipGroup.getChildCount(); i++) {
+                Chip chip = (Chip) categoryChipGroup.getChildAt(i);
+                if (chip.isChecked()) {
+                    selectedCategories.add(chip.getText().toString());
+                }
+            }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.filter_title)
-                .setMultiChoiceItems(categoryArray, checkedItems, (dialog, which, isChecked) -> {
-            checkedItems[which] = isChecked;
-        })
-                .setPositiveButton("Apply", (dialog, which) -> {
-                    List<String> selectedCategories = new ArrayList<>();
-                    for (int i = 0; i < checkedItems.length; i++) {
-                        if (checkedItems[i]) {
-                            selectedCategories.add(categoryArray[i]);
-                        }
-                    }
-                    String searchQuery = searchView != null ? searchView.getQuery().toString() : "";
-                    filterShows(searchQuery, selectedCategories.isEmpty() ? null : selectedCategories);
-                })
-                .setNegativeButton("Clear", (dialog, which) -> {
-                    String searchQuery = searchView != null ? searchView.getQuery().toString() : "";
-                    filterShows(searchQuery, null);
-                });
+            // Get other filter values
+            int maxPrice = priceSeekBar.getProgress();
+            float minRating = ratingFilter.getRating();
+            boolean upcomingOnly = upcomingOnlySwitch.isChecked();
+            int maxDuration = durationSeekBar.getProgress();
+            boolean popularOnly = popularOnlySwitch.isChecked();
+            boolean availableSeatsOnly = availableSeatsSwitch.isChecked();
 
+            // Apply all filters
+            applyAdvancedFilters(
+                    searchView != null ? searchView.getQuery().toString() : "",
+                    selectedCategories.isEmpty() ? null : selectedCategories,
+                    maxPrice,
+                    minRating,
+                    upcomingOnly,
+                    maxDuration,
+                    popularOnly,
+                    availableSeatsOnly
+            );
+        });
+
+        builder.setNegativeButton("Clear", (dialog, which) -> clearAllFilters());
+        builder.setNeutralButton("Cancel", null);
         builder.create().show();
+    }
+
+    private void applyAdvancedFilters(
+            String query,
+            List<String> categories,
+            int maxPrice,
+            float minRating,
+            boolean upcomingOnly,
+            int maxDuration,
+            boolean popularOnly,
+            boolean availableSeatsOnly
+    ) {
+        List<Show> filteredShows = new ArrayList<>();
+        long currentTime = System.currentTimeMillis();
+
+        for (Show show : allShows) {
+            // Convert duration string to minutes (e.g., "2 hours 30 minutes" -> 150)
+            int durationMinutes = convertDurationToMinutes(show.getDuration());
+
+            boolean matchesSearch = query.isEmpty() ||
+                    show.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                    show.getShortDescription().toLowerCase().contains(query.toLowerCase());
+
+            boolean matchesCategory = categories == null ||
+                    categories.contains(show.getCategory());
+
+            boolean matchesPrice = show.getPrice() <= maxPrice;
+            boolean matchesRating = show.getRating() >= minRating;
+            boolean matchesUpcoming = !upcomingOnly || show.getDate().getTime() > currentTime;
+            boolean matchesDuration = durationMinutes <= maxDuration;
+            boolean matchesPopular = !popularOnly || show.isPopular();
+            boolean matchesAvailability = !availableSeatsOnly || show.getAvailableSeats() > 0;
+
+            if (matchesSearch && matchesCategory && matchesPrice && matchesRating &&
+                    matchesUpcoming && matchesDuration && matchesPopular && matchesAvailability) {
+                filteredShows.add(show);
+            }
+        }
+
+        showsAdapter.updateList(filteredShows);
+    }
+
+    private int convertDurationToMinutes(String duration) {
+        try {
+            int hours = 0;
+            int minutes = 0;
+
+            if (duration.contains("hour")) {
+                String hoursStr = duration.substring(0, duration.indexOf("hour")).trim();
+                hours = Integer.parseInt(hoursStr);
+            }
+
+            if (duration.contains("minute")) {
+                String minsStr = duration.substring(duration.indexOf("hour") > 0 ?
+                        duration.indexOf("hour") + 4 : 0, duration.indexOf("minute")).trim();
+                minsStr = minsStr.replaceAll("[^0-9]", "").trim();
+                minutes = Integer.parseInt(minsStr);
+            }
+
+            return hours * 60 + minutes;
+        } catch (Exception e) {
+            return 240; // Default to max if parsing fails
+        }
+    }
+
+    private void clearAllFilters() {
+        if (searchView != null) {
+            searchView.setQuery("", false);
+        }
+        showsAdapter.updateList(allShows);
     }
 
     private void filterShows(String query, List<String> categories) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -11,206 +12,290 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/showImage"
+        <!-- Hero Image with Back Button and Rating Badge -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="280dp"
-            android:background="@color/gray_200"
-            android:scaleType="centerCrop" />
+            android:background="@color/gray_200">
 
+            <ImageView
+                android:id="@+id/showImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/show_image"
+                android:scaleType="centerCrop"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <!-- Back Button -->
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:elevation="4dp"
+                android:src="@drawable/ic_arrow_back"
+                android:tint="@color/white" />
+
+            <!-- Rating Badge -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_margin="12dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/bg_rating_badge"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="4dp"
+                    app:tint="@color/white"
+                    app:srcCompat="@drawable/ic_star"/>
+
+                <TextView
+                    android:id="@+id/ratingTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.8"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Content Area -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="24dp">
 
-            <TextView
-                android:id="@+id/titleTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/categoryTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_category_chip"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
+            <!-- Title and Category -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginBottom="12dp">
 
+                <TextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Jazz Night Extravaganza"
+                    android:textSize="24sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    tools:ignore="HardcodedText"/>
+
+                <TextView
+                    android:id="@+id/categoryTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/bg_category_chip"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="MUSIC"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:fontFamily="sans-serif-medium"
+                    tools:ignore="HardcodedText"/>
+            </LinearLayout>
+
+            <!-- Price and Date Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <!-- Price -->
                 <TextView
                     android:id="@+id/priceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/purple_500"
+                    android:text="$45.99"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/purple_500"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginEnd="16dp"
+                    tools:ignore="HardcodedText"/>
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="16dp"
-                    android:layout_marginHorizontal="12dp"
-                    android:background="@color/gray_400" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="4dp"
-                    app:srcCompat="@drawable/ic_star"
-                    app:tint="@color/gray_600" />
-
-                <TextView
-                    android:id="@+id/ratingTextView"
+                <!-- Date and Time Container -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/gray_600"
-                    android:textSize="14sp"
-                    />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <!-- Date -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginEnd="12dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="6dp"
+                            app:tint="@color/gray_600"
+                            app:srcCompat="@drawable/ic_calendar"/>
+
+                        <TextView
+                            android:id="@+id/dateTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fri, Jun 10, 2023"
+                            android:textSize="14sp"
+                            android:textColor="@color/gray_600"
+                            tools:ignore="HardcodedText"/>
+                    </LinearLayout>
+
+                    <!-- Time -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="6dp"
+                            app:tint="@color/gray_600"
+                            app:srcCompat="@drawable/ic_time"/>
+
+                        <TextView
+                            android:id="@+id/timeTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="7:30 PM"
+                            android:textSize="14sp"
+                            android:textColor="@color/gray_600"
+                            tools:ignore="HardcodedText"/>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- Details section -->
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="@color/gray_100"/>
+
+            <!-- Details Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Details"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Event Details"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-
-            <!-- Date -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="8dp"
-                    app:srcCompat="@drawable/ic_calendar"
-                    app:tint="@color/gray_600" />
-
-                <TextView
-                    android:id="@+id/dateTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray_600"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <!-- Time -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="8dp"
-                    app:srcCompat="@drawable/ic_time"
-                    app:tint="@color/gray_600" />
-
-                <TextView
-                    android:id="@+id/timeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray_600"
-                    android:textSize="16sp" />
-            </LinearLayout>
 
             <!-- Venue -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="8dp"
-                    app:srcCompat="@drawable/ic_location"
-                    app:tint="@color/gray_600" />
+                    android:layout_marginEnd="12dp"
+                    app:tint="@color/gray_600"
+                    app:srcCompat="@drawable/ic_location"/>
 
                 <TextView
                     android:id="@+id/venueTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Grand Concert Hall, 123 Music Ave"
+                    android:textSize="15sp"
                     android:textColor="@color/gray_600"
-                    android:textSize="16sp" />
+                    tools:ignore="HardcodedText"/>
             </LinearLayout>
 
             <!-- Duration -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="8dp"
-                    app:srcCompat="@drawable/ic_duration"
-                    app:tint="@color/gray_600" />
+                    android:layout_marginEnd="12dp"
+                    app:tint="@color/gray_600"
+                    app:srcCompat="@drawable/ic_duration"/>
 
                 <TextView
                     android:id="@+id/durationTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="2 hours 30 minutes (with intermission)"
+                    android:textSize="15sp"
                     android:textColor="@color/gray_600"
-                    android:textSize="16sp" />
+                    tools:ignore="HardcodedText"/>
             </LinearLayout>
 
             <!-- Seats -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="8dp"
-                    app:srcCompat="@drawable/ic_seat"
-                    app:tint="@color/gray_600" />
+                    android:layout_marginEnd="12dp"
+                    app:tint="@color/gray_600"
+                    app:srcCompat="@drawable/ic_seat"/>
 
                 <TextView
                     android:id="@+id/seatsTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="150 seats available"
+                    android:textSize="15sp"
                     android:textColor="@color/gray_600"
-                    android:textSize="16sp" />
+                    tools:ignore="HardcodedText"/>
             </LinearLayout>
 
-            <!-- About section -->
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="@color/gray_100"/>
+
+            <!-- About Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="About"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="About the Event"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -219,21 +304,27 @@
                 android:id="@+id/descriptionTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:lineSpacingMultiplier="1.25"
+                android:text="Join us for an unforgettable evening featuring world-class jazz musicians performing classic and contemporary jazz pieces in an intimate setting. This special event brings together award-winning artists from around the globe for one night only."
+                android:textSize="15sp"
                 android:textColor="@color/gray_600"
-                android:textSize="16sp" />
+                android:lineSpacingMultiplier="1.25"
+                android:letterSpacing="0.03"
+                tools:ignore="HardcodedText"/>
 
+            <!-- Reserve Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/reserveButton"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="56dp"
                 android:layout_marginTop="32dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="Reserve Now"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:backgroundTint="@color/purple_500"
-                app:cornerRadius="24dp" />
+                app:cornerRadius="12dp"
+                app:elevation="2dp" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

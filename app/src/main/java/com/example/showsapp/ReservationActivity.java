@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class ReservationActivity extends AppCompatActivity {
 
@@ -43,6 +44,9 @@ public class ReservationActivity extends AppCompatActivity {
         showId = getIntent().getStringExtra("SHOW_ID");
         showTitle = getIntent().getStringExtra("SHOW_TITLE");
         availableSeats = getIntent().getIntExtra("AVAILABLE_SEATS", 0);
+
+        TextInputLayout seatsLayout = (TextInputLayout) findViewById(R.id.etSeats).getParent().getParent();
+        seatsLayout.setHelperText("Available seats: " + availableSeats);
 
         if (showTitle != null) {
             tvShowTitle.setText("Reservation for: " + showTitle);

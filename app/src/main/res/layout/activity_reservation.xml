@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white">
 
+    <!-- Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -18,109 +20,163 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="24dp">
 
-            <!-- Show Info -->
-            <TextView
-                android:id="@+id/showTitle"
+            <!-- Show Info Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/gray_100"
+                app:strokeWidth="0.5dp">
 
-            <!-- Personal Info -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Reserving for:"
+                        android:textSize="14sp"
+                        android:textColor="@color/gray_600"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/showTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:ellipsize="end"
+                        android:maxLines="2"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Personal Info Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Personal Information"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="16dp"/>
 
+            <!-- Full Name -->
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:errorEnabled="true">
+                android:layout_marginBottom="16dp"
+                app:errorEnabled="true"
+                app:boxStrokeColor="@color/gray_400"
+                app:hintTextColor="@color/gray_600">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etFullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Full Name"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:errorEnabled="true">
+                android:layout_marginBottom="16dp"
+                app:errorEnabled="true"
+                app:boxStrokeColor="@color/gray_400"
+                app:hintTextColor="@color/gray_600">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"/>
+                    android:hint="Email Address"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Phone -->
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:errorEnabled="true">
+                android:layout_marginBottom="24dp"
+                app:errorEnabled="true"
+                app:boxStrokeColor="@color/gray_400"
+                app:hintTextColor="@color/gray_600">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Phone Number"
-                    android:inputType="phone"/>
+                    android:inputType="phone"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Seats -->
+            <!-- Seats Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Seat Selection"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="16dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:errorEnabled="true">
+                android:layout_marginBottom="8dp"
+                app:errorEnabled="true"
+                app:boxStrokeColor="@color/gray_400"
+                app:hintTextColor="@color/gray_600"
+                app:helperTextEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etSeats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Number of Seats"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Submit Button -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
                 android:text="Submit Reservation"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/purple_500"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                app:cornerRadius="12dp"
+                app:backgroundTint="@color/purple_500"
+                app:elevation="2dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

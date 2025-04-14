@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">ShowsApp</string>
-    <string name="show_image">Show image</string>
-    <string name="reserve_now">Reserve Now</string>
-    <string name="duration_format">Duration: %s</string>
-    <string name="seats_available_format">Seats available: %d</string>
     <string name="search_hint">Search shows...</string>
     <string name="filter_title">Filter by Category</string>
+    <string name="details">Details</string>
+    <string name="about">About</string>
+    <string name="reserve_now">Reserve Now</string>
+    <string name="duration_format">Duration: %s</string>
+    <string name="seats_available_format">%d seats available</string>
+    <string name="show_image">Show image</string>
 </resources>
