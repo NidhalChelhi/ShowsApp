@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -28,6 +29,10 @@ public class ShowDetailActivity extends AppCompatActivity {
 
     private ShowApiService apiService;
     private Show show;
+    private String showId; // Add this class field
+
+    private static final int RESERVATION_REQUEST_CODE = 1001; // Or any unique number
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,7 @@ public class ShowDetailActivity extends AppCompatActivity {
         apiService = ApiClient.getClient().create(ShowApiService.class);
 
         // Get the show ID from the intent
-        String showId = getIntent().getStringExtra("SHOW_ID");
+        showId = getIntent().getStringExtra("SHOW_ID");
         if (showId != null) {
             fetchShowDetails(showId);
         } else {
@@ -137,7 +142,7 @@ public class ShowDetailActivity extends AppCompatActivity {
                 intent.putExtra("SHOW_ID", show.getId());
                 intent.putExtra("SHOW_TITLE", show.getTitle());
                 intent.putExtra("AVAILABLE_SEATS", show.getAvailableSeats());
-                startActivity(intent);
+                startActivityForResult(intent, RESERVATION_REQUEST_CODE); // Changed to startActivityForResult
             } else {
                 Toast.makeText(this, "No seats available for this show", Toast.LENGTH_SHORT).show();
             }
@@ -157,5 +162,29 @@ public class ShowDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            String updatedShowId = data.getStringExtra("SHOW_ID");
+            int reservedSeats = data.getIntExtra("RESERVED_SEATS", 0);
+
+            if (showId.equals(updatedShowId)) { // Now showId is available
+                show.setAvailableSeats(show.getAvailableSeats() - reservedSeats);
+                updateSeatsTextView();
+            }
+        }
+    }
+
+
+    private void updateSeatsTextView() {
+        TextView seatsTextView = findViewById(R.id.seatsTextView);
+        seatsTextView.setText(String.format(Locale.getDefault(),
+                "Seats available: %d", show.getAvailableSeats()));
+
+        Button reserveButton = findViewById(R.id.reserveButton);
+        reserveButton.setEnabled(show.getAvailableSeats() > 0);
     }
 }

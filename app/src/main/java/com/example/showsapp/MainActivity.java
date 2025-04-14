@@ -2,7 +2,6 @@ package com.example.showsapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +31,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnShowClickListener {
+    private static final String TAG = "MainActivity";
+
     private RecyclerView showsRecyclerView;
     private ShowsAdapter showsAdapter;
     private List<Show> allShows = new ArrayList<>();
@@ -44,55 +44,52 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        apiService = ApiClient.getClient().create(ShowApiService.class);
-
-        showsRecyclerView = findViewById(R.id.showsRecyclerView);
-        showsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        showsAdapter = new ShowsAdapter(allShows, this);
-        showsRecyclerView.setAdapter(showsAdapter);
-
+        initializeToolbar();
+        initializeRecyclerView();
+        initializeApiService();
         fetchShowsFromApi();
     }
 
+    private void initializeToolbar() {
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    private void initializeRecyclerView() {
+        showsRecyclerView = findViewById(R.id.showsRecyclerView);
+        showsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        showsAdapter = new ShowsAdapter(allShows, this);
+        showsRecyclerView.setAdapter(showsAdapter);
+    }
+
+    private void initializeApiService() {
+        apiService = ApiClient.getClient().create(ShowApiService.class);
+    }
+
     private void fetchShowsFromApi() {
-        Call<List<Show>> call = apiService.getAllShows();
-        call.enqueue(new Callback<List<Show>>() {
+        apiService.getAllShows().enqueue(new Callback<List<Show>>() {
             @Override
             public void onResponse(Call<List<Show>> call, Response<List<Show>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     allShows = response.body();
                     showsAdapter.updateList(allShows);
-
-                    // Log the response for debugging
-                    Log.d("API_RESPONSE", "Number of shows fetched: " + allShows.size());
-                    for (Show show : allShows) {
-                        Log.d("API_RESPONSE", "Show: " + show.getTitle() + ", Date: " + show.getDate());
-                    }
                 } else {
-                    String errorMessage = "Failed to fetch shows: " + response.code();
-                    if (response.errorBody() != null) {
-                        try {
-                            errorMessage += " - " + response.errorBody().string();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    Log.e("API_ERROR", errorMessage);
-                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                    handleApiError(response);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Show>> call, Throwable t) {
-                String errorMessage = "Error: " + t.getMessage();
-                Log.e("API_FAILURE", errorMessage, t);
-                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,
+                        getString(R.string.network_error, t.getMessage()),
+                        Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void handleApiError(Response<List<Show>> response) {
+        String errorMessage = getString(R.string.api_error, response.code());
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

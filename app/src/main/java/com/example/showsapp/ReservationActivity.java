@@ -1,5 +1,6 @@
 package com.example.showsapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -126,6 +127,9 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Reservation> call, Response<Reservation> response) {
                 if (response.isSuccessful()) {
+                    // Update the local show data
+                    updateLocalShowData(numberOfSeats);
+
                     Toast.makeText(ReservationActivity.this,
                             "Reservation successful for " + numberOfSeats + " seats!",
                             Toast.LENGTH_LONG).show();
@@ -144,6 +148,12 @@ public class ReservationActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         });
+    }
 
+    private void updateLocalShowData(int reservedSeats) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("RESERVED_SEATS", reservedSeats);
+        resultIntent.putExtra("SHOW_ID", showId);
+        setResult(RESULT_OK, resultIntent);
     }
 }

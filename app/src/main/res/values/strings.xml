@@ -8,4 +8,9 @@
     <string name="duration_format">Duration: %s</string>
     <string name="seats_available_format">%d seats available</string>
     <string name="show_image">Show image</string>
+    <string name="network_error">Network error: %s</string>
+    <string name="api_error">API error: %d</string>
+    <string name="date_not_available">N/A</string>
+    <string name="time_not_available">N/A</string>
+    <string name="seats_available">%d seats</string>
 </resources>

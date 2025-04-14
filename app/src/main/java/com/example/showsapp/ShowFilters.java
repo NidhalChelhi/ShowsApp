@@ -1,7 +1,5 @@
 package com.example.showsapp;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,83 +22,48 @@ public class ShowFilters {
         long currentTime = System.currentTimeMillis();
 
         for (Show show : allShows) {
-            boolean matchesSearch = query.isEmpty() ||
-                    show.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                    show.getShortDescription().toLowerCase().contains(query.toLowerCase());
-
-            boolean matchesCategory = categories == null || categories.isEmpty() ||
-                    categories.contains(show.getCategory());
-
-            boolean matchesPrice = show.getPrice() <= maxPrice;
-            boolean matchesRating = show.getRating() >= minRating;
-            boolean matchesDuration = show.getDurationMinutes() <= maxDuration;
-            boolean matchesPopular = !popularOnly || show.isPopular();
-            boolean matchesAvailability = !availableSeatsOnly || show.getAvailableSeats() > 0;
-
-            // For upcomingOnly filter, we need to parse the date string
-            boolean matchesUpcoming = true;
-            if (upcomingOnly) {
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                    Date showDate = sdf.parse(show.getDate());
-                    matchesUpcoming = showDate != null && showDate.getTime() > currentTime;
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    matchesUpcoming = false;
-                }
-            }
-
-            if (matchesSearch && matchesCategory && matchesPrice && matchesRating &&
-                    matchesUpcoming && matchesDuration && matchesPopular && matchesAvailability) {
+            // Check all conditions
+            if (matchesSearch(show, query) &&
+                    matchesCategory(show, categories) &&
+                    show.getPrice() <= maxPrice &&
+                    show.getRating() >= minRating &&
+                    matchesUpcoming(show, upcomingOnly, currentTime) &&
+                    show.getDurationMinutes() <= maxDuration &&
+                    (!popularOnly || show.isPopular()) &&
+                    (!availableSeatsOnly || show.getAvailableSeats() > 0)) {
                 filteredShows.add(show);
             }
         }
-
         return filteredShows;
     }
+
+    private static boolean matchesSearch(Show show, String query) {
+        if (query == null || query.isEmpty()) return true;
+
+        String lowerQuery = query.toLowerCase(Locale.getDefault());
+        return show.getTitle().toLowerCase(Locale.getDefault()).contains(lowerQuery) ||
+                show.getShortDescription().toLowerCase(Locale.getDefault()).contains(lowerQuery);
+    }
+
+    private static boolean matchesCategory(Show show, List<String> categories) {
+        return categories == null || categories.isEmpty() ||
+                categories.contains(show.getCategory());
+    }
+
+    private static boolean matchesUpcoming(Show show, boolean upcomingOnly, long currentTime) {
+        if (!upcomingOnly) return true;
+
+        Date showDate = show.getParsedDate();
+        return showDate != null && showDate.getTime() > currentTime;
+    }
+
     public static List<Show> simpleFilter(
             List<Show> allShows,
             String query,
             List<String> categories
     ) {
-        List<Show> filteredShows = new ArrayList<>();
-
-        for (Show show : allShows) {
-            boolean matchesSearch = query.isEmpty() ||
-                    show.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                    show.getShortDescription().toLowerCase().contains(query.toLowerCase());
-
-            boolean matchesCategory = categories == null || categories.isEmpty() ||
-                    categories.contains(show.getCategory());
-
-            if (matchesSearch && matchesCategory) {
-                filteredShows.add(show);
-            }
-        }
-
-        return filteredShows;
-    }
-
-    private static int convertDurationToMinutes(String duration) {
-        try {
-            int hours = 0;
-            int minutes = 0;
-
-            if (duration.contains("hour")) {
-                String hoursStr = duration.substring(0, duration.indexOf("hour")).trim();
-                hours = Integer.parseInt(hoursStr);
-            }
-
-            if (duration.contains("minute")) {
-                String minsStr = duration.substring(duration.indexOf("hour") > 0 ?
-                        duration.indexOf("hour") + 4 : 0, duration.indexOf("minute")).trim();
-                minsStr = minsStr.replaceAll("[^0-9]", "").trim();
-                minutes = Integer.parseInt(minsStr);
-            }
-
-            return hours * 60 + minutes;
-        } catch (Exception e) {
-            return 240; // Default to max if parsing fails
-        }
+        return filterShows(allShows, query, categories,
+                Integer.MAX_VALUE, 0, false,
+                Integer.MAX_VALUE, false, false);
     }
 }

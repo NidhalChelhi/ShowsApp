@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +19,12 @@ import java.util.Locale;
 
 public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowViewHolder> {
     private List<Show> showsList;
-    private OnShowClickListener listener;
+    private final OnShowClickListener listener;
+
+    private static final int MAX_TITLE_LINES = 1;
+    private static final int MAX_DESC_LINES = 2;
+    private static final String DATE_FORMAT = "EEE, MMM d";
+    private static final String TIME_FORMAT = "h:mm a";
 
     public interface OnShowClickListener {
         void onShowClick(Show show);
@@ -46,46 +51,7 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowViewHold
     @Override
     public void onBindViewHolder(@NonNull ShowViewHolder holder, int position) {
         Show show = showsList.get(position);
-
-        // Load image using Glide
-        Glide.with(holder.itemView.getContext())
-                .load(show.getImageUrl())
-                .placeholder(R.drawable.placeholder_image)
-                .into(holder.showImageView);
-
-        // Set text values
-        holder.titleTextView.setText(show.getTitle());
-        holder.categoryTextView.setText(show.getCategory());
-        holder.descriptionTextView.setText(show.getShortDescription());
-        holder.priceTextView.setText(show.getFormattedPrice());
-        holder.ratingTextView.setText(show.getFormattedRating());
-        holder.venueTextView.setText(show.getVenue()); // Added venue text
-
-        // Format date and time
-        try {
-            SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-            Date date = apiFormat.parse(show.getDate());
-
-            if (date != null) {
-                // Format date as "Fri, Jun 10"
-                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d", Locale.getDefault());
-                holder.dateTextView.setText(dateFormat.format(date));
-
-                // Format time as "7:30 PM"
-                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
-                holder.timeTextView.setText(timeFormat.format(date));
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-            holder.dateTextView.setText("N/A");
-            holder.timeTextView.setText("N/A");
-        }
-
-        // Set seats text
-        holder.seatsTextView.setText(String.format(Locale.getDefault(), "%d seats", show.getAvailableSeats()));
-
-        // Set click listener
-        holder.itemView.setOnClickListener(v -> listener.onShowClick(show));
+        holder.bind(show, listener);
     }
 
     @Override
@@ -94,17 +60,16 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowViewHold
     }
 
     static class ShowViewHolder extends RecyclerView.ViewHolder {
-        ImageView showImageView;
-        TextView titleTextView;
-        TextView categoryTextView;
-        TextView descriptionTextView;
-        TextView priceTextView;
-        TextView dateTextView;
-        TextView timeTextView;
-        TextView seatsTextView;
-        TextView ratingTextView;
-        TextView venueTextView; // Added this field
-        // Removed durationTextView since it's not in your layout
+        private final ImageView showImageView;
+        private final TextView titleTextView;
+        private final TextView categoryTextView;
+        private final TextView descriptionTextView;
+        private final TextView priceTextView;
+        private final TextView dateTextView;
+        private final TextView timeTextView;
+        private final TextView seatsTextView;
+        private final TextView ratingTextView;
+        private final TextView venueTextView;
 
         public ShowViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -117,6 +82,42 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowViewHold
             timeTextView = itemView.findViewById(R.id.timeTextView);
             seatsTextView = itemView.findViewById(R.id.seatsTextView);
             ratingTextView = itemView.findViewById(R.id.ratingTextView);
-            venueTextView = itemView.findViewById(R.id.venueTextView); // Initialize this
+            venueTextView = itemView.findViewById(R.id.venueTextView);
         }
-    }}
+
+        public void bind(Show show, OnShowClickListener listener) {
+            loadImage(show);
+            setTextViews(show);
+            itemView.setOnClickListener(v -> listener.onShowClick(show));
+        }
+
+        private void loadImage(Show show) {
+            Glide.with(itemView.getContext())
+                    .load(show.getImageUrl())
+                    .apply(new RequestOptions()
+                            .placeholder(R.drawable.placeholder_image)
+                            .error(R.drawable.placeholder_image))
+                    .into(showImageView);
+        }
+
+        private void setTextViews(Show show) {
+            titleTextView.setText(show.getTitle());
+            categoryTextView.setText(show.getCategory());
+            descriptionTextView.setText(show.getShortDescription());
+            priceTextView.setText(show.getFormattedPrice());
+            ratingTextView.setText(show.getFormattedRating());
+            venueTextView.setText(show.getVenue());
+            seatsTextView.setText(itemView.getContext().getString(
+                    R.string.seats_available, show.getAvailableSeats()));
+
+            Date showDate = show.getParsedDate();
+            if (showDate != null) {
+                dateTextView.setText(new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(showDate));
+                timeTextView.setText(new SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(showDate));
+            } else {
+                dateTextView.setText(R.string.date_not_available);
+                timeTextView.setText(R.string.time_not_available);
+            }
+        }
+    }
+}
