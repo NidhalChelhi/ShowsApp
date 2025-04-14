@@ -13,6 +13,10 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ReservationActivity extends AppCompatActivity {
 
     private TextInputEditText etFullName, etEmail, etPhone, etSeats;
@@ -107,7 +111,7 @@ public class ReservationActivity extends AppCompatActivity {
             return;
         }
 
-        Reservation reservation = new Reservation(
+        ReservationRequest request = new ReservationRequest(
                 showId,
                 fullName,
                 email,
@@ -115,7 +119,31 @@ public class ReservationActivity extends AppCompatActivity {
                 numberOfSeats
         );
 
-        Toast.makeText(this, "Reservation successful for " + numberOfSeats + " seats!", Toast.LENGTH_LONG).show();
-        finish();
+        ShowApiService apiService = ApiClient.getClient().create(ShowApiService.class);
+        Call<Reservation> call = apiService.createReservation(request);
+
+        call.enqueue(new Callback<Reservation>() {
+            @Override
+            public void onResponse(Call<Reservation> call, Response<Reservation> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(ReservationActivity.this,
+                            "Reservation successful for " + numberOfSeats + " seats!",
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    Toast.makeText(ReservationActivity.this,
+                            "Reservation failed: " + response.message(),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reservation> call, Throwable t) {
+                Toast.makeText(ReservationActivity.this,
+                        "Network error: " + t.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

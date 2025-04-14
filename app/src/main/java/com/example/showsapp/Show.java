@@ -1,28 +1,40 @@
 package com.example.showsapp;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 public class Show {
     private String id;
     private String title;
     private String category;
+
+    @SerializedName("shortDescription")
     private String shortDescription;
+
+    @SerializedName("fullDescription")
     private String fullDescription;
+
+    @SerializedName("imageUrl")
     private String imageUrl;
     private double price;
-    private Date date;
-    private String time;
+    private String date;  // Changed from Date to String
     private String venue;
-    private String duration;
-    private int availableSeats;
-    private boolean isPopular;
 
+    @SerializedName("durationMinutes")
+    private int durationMinutes;  // Changed from String duration to int
+
+    @SerializedName("availableSeats")
+    private int availableSeats;
+
+    @SerializedName("isPopular")
+    private boolean isPopular;
     private double rating;
 
     // Constructor
     public Show(String id, String title, String category, String shortDescription,
-                String fullDescription, String imageUrl, double price, Date date,
-                String time, String venue, String duration, int availableSeats,
+                String fullDescription, String imageUrl, double price, String date,
+                String venue, int durationMinutes, int availableSeats,
                 boolean isPopular, double rating) {
         this.id = id;
         this.title = title;
@@ -32,128 +44,29 @@ public class Show {
         this.imageUrl = imageUrl;
         this.price = price;
         this.date = date;
-        this.time = time;
         this.venue = venue;
-        this.duration = duration;
+        this.durationMinutes = durationMinutes;
         this.availableSeats = availableSeats;
         this.isPopular = isPopular;
         this.rating = rating;
     }
 
-    // Getters and Setters
-    public String getId() {
-        return id;
-    }
+    // Getters
+    public String getId() { return id; }
+    public String getTitle() { return title; }
+    public String getCategory() { return category; }
+    public String getShortDescription() { return shortDescription; }
+    public String getFullDescription() { return fullDescription; }
+    public String getImageUrl() { return imageUrl; }
+    public double getPrice() { return price; }
+    public String getDate() { return date; }
+    public String getVenue() { return venue; }
+    public int getDurationMinutes() { return durationMinutes; }
+    public int getAvailableSeats() { return availableSeats; }
+    public boolean isPopular() { return isPopular; }
+    public double getRating() { return rating; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-    public String getFullDescription() {
-        return fullDescription;
-    }
-
-    public void setFullDescription(String fullDescription) {
-        this.fullDescription = fullDescription;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getVenue() {
-        return venue;
-    }
-
-    public void setVenue(String venue) {
-        this.venue = venue;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public int getAvailableSeats() {
-        return availableSeats;
-    }
-
-    public void setAvailableSeats(int availableSeats) {
-        this.availableSeats = availableSeats;
-    }
-
-    public boolean isPopular() {
-        return isPopular;
-    }
-
-    public void setPopular(boolean popular) {
-        isPopular = popular;
-    }
-
-    public double getRating(){
-        return rating;
-    }
-
-    public void setRating(double rating){
-        this.rating = rating;
-    }
-
-    // Helper method to get formatted price
+    // Helper methods
     public String getFormattedPrice() {
         return String.format("$%.2f", price);
     }
@@ -162,8 +75,9 @@ public class Show {
         return String.format("%.1f", rating);
     }
 
-    // Helper method to get date as string (you can customize the format)
-    public String getFormattedDate() {
-        return date.toString();
+    public String getDurationString() {
+        int hours = durationMinutes / 60;
+        int minutes = durationMinutes % 60;
+        return hours + " hours " + minutes + " minutes";
     }
 }

@@ -2,6 +2,7 @@ package com.example.showsapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,43 +22,82 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnShowClickListener {
     private RecyclerView showsRecyclerView;
     private ShowsAdapter showsAdapter;
-    private List<Show> allShows;
+    private List<Show> allShows = new ArrayList<>();
     private SearchView searchView;
+    private ShowApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize toolbar
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Initialize RecyclerView
+        apiService = ApiClient.getClient().create(ShowApiService.class);
+
         showsRecyclerView = findViewById(R.id.showsRecyclerView);
         showsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Get all shows
-        allShows = ShowsDataUtil.generateDummyShows();
-
-        // Set initial data
         showsAdapter = new ShowsAdapter(allShows, this);
         showsRecyclerView.setAdapter(showsAdapter);
+
+        fetchShowsFromApi();
     }
 
+    private void fetchShowsFromApi() {
+        Call<List<Show>> call = apiService.getAllShows();
+        call.enqueue(new Callback<List<Show>>() {
+            @Override
+            public void onResponse(Call<List<Show>> call, Response<List<Show>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    allShows = response.body();
+                    showsAdapter.updateList(allShows);
+
+                    // Log the response for debugging
+                    Log.d("API_RESPONSE", "Number of shows fetched: " + allShows.size());
+                    for (Show show : allShows) {
+                        Log.d("API_RESPONSE", "Show: " + show.getTitle() + ", Date: " + show.getDate());
+                    }
+                } else {
+                    String errorMessage = "Failed to fetch shows: " + response.code();
+                    if (response.errorBody() != null) {
+                        try {
+                            errorMessage += " - " + response.errorBody().string();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Log.e("API_ERROR", errorMessage);
+                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Show>> call, Throwable t) {
+                String errorMessage = "Error: " + t.getMessage();
+                Log.e("API_FAILURE", errorMessage, t);
+                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        // Setup search view
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint(getString(R.string.search_hint));
@@ -69,7 +110,8 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterShows(newText, null);
+                List<Show> filtered = ShowFilters.simpleFilter(allShows, newText, null);
+                showsAdapter.updateList(filtered);
                 return true;
             }
         });
@@ -91,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_advanced_filters, null);
         builder.setView(dialogView);
 
-        // Initialize all filter views
         ChipGroup categoryChipGroup = dialogView.findViewById(R.id.categoryChipGroup);
         SeekBar priceSeekBar = dialogView.findViewById(R.id.priceSeekBar);
         TextView priceRangeText = dialogView.findViewById(R.id.priceRangeText);
@@ -102,8 +143,7 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
         Switch popularOnlySwitch = dialogView.findViewById(R.id.popularOnlySwitch);
         Switch availableSeatsSwitch = dialogView.findViewById(R.id.availableSeatsSwitch);
 
-        // Price filter setup
-        priceSeekBar.setMax(100); // $100 max
+        priceSeekBar.setMax(100);
         priceSeekBar.setProgress(100);
         priceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -114,8 +154,7 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        // Duration filter setup
-        durationSeekBar.setMax(240); // 240 minutes (4 hours)
+        durationSeekBar.setMax(240);
         durationSeekBar.setProgress(240);
         durationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -139,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
         }
 
         builder.setPositiveButton("Apply", (dialog, which) -> {
-            // Get selected categories
             List<String> selectedCategories = new ArrayList<>();
             for (int i = 0; i < categoryChipGroup.getChildCount(); i++) {
                 Chip chip = (Chip) categoryChipGroup.getChildAt(i);
@@ -148,119 +186,30 @@ public class MainActivity extends AppCompatActivity implements ShowsAdapter.OnSh
                 }
             }
 
-            // Get other filter values
-            int maxPrice = priceSeekBar.getProgress();
-            float minRating = ratingFilter.getRating();
-            boolean upcomingOnly = upcomingOnlySwitch.isChecked();
-            int maxDuration = durationSeekBar.getProgress();
-            boolean popularOnly = popularOnlySwitch.isChecked();
-            boolean availableSeatsOnly = availableSeatsSwitch.isChecked();
-
-            // Apply all filters
-            applyAdvancedFilters(
+            List<Show> filtered = ShowFilters.filterShows(
+                    allShows,
                     searchView != null ? searchView.getQuery().toString() : "",
                     selectedCategories.isEmpty() ? null : selectedCategories,
-                    maxPrice,
-                    minRating,
-                    upcomingOnly,
-                    maxDuration,
-                    popularOnly,
-                    availableSeatsOnly
+                    priceSeekBar.getProgress(),
+                    ratingFilter.getRating(),
+                    upcomingOnlySwitch.isChecked(),
+                    durationSeekBar.getProgress(),
+                    popularOnlySwitch.isChecked(),
+                    availableSeatsSwitch.isChecked()
             );
+
+            showsAdapter.updateList(filtered);
         });
 
-        builder.setNegativeButton("Clear", (dialog, which) -> clearAllFilters());
+        builder.setNegativeButton("Clear", (dialog, which) -> {
+            if (searchView != null) {
+                searchView.setQuery("", false);
+            }
+            showsAdapter.updateList(allShows);
+        });
+
         builder.setNeutralButton("Cancel", null);
         builder.create().show();
-    }
-
-    private void applyAdvancedFilters(
-            String query,
-            List<String> categories,
-            int maxPrice,
-            float minRating,
-            boolean upcomingOnly,
-            int maxDuration,
-            boolean popularOnly,
-            boolean availableSeatsOnly
-    ) {
-        List<Show> filteredShows = new ArrayList<>();
-        long currentTime = System.currentTimeMillis();
-
-        for (Show show : allShows) {
-            // Convert duration string to minutes (e.g., "2 hours 30 minutes" -> 150)
-            int durationMinutes = convertDurationToMinutes(show.getDuration());
-
-            boolean matchesSearch = query.isEmpty() ||
-                    show.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                    show.getShortDescription().toLowerCase().contains(query.toLowerCase());
-
-            boolean matchesCategory = categories == null ||
-                    categories.contains(show.getCategory());
-
-            boolean matchesPrice = show.getPrice() <= maxPrice;
-            boolean matchesRating = show.getRating() >= minRating;
-            boolean matchesUpcoming = !upcomingOnly || show.getDate().getTime() > currentTime;
-            boolean matchesDuration = durationMinutes <= maxDuration;
-            boolean matchesPopular = !popularOnly || show.isPopular();
-            boolean matchesAvailability = !availableSeatsOnly || show.getAvailableSeats() > 0;
-
-            if (matchesSearch && matchesCategory && matchesPrice && matchesRating &&
-                    matchesUpcoming && matchesDuration && matchesPopular && matchesAvailability) {
-                filteredShows.add(show);
-            }
-        }
-
-        showsAdapter.updateList(filteredShows);
-    }
-
-    private int convertDurationToMinutes(String duration) {
-        try {
-            int hours = 0;
-            int minutes = 0;
-
-            if (duration.contains("hour")) {
-                String hoursStr = duration.substring(0, duration.indexOf("hour")).trim();
-                hours = Integer.parseInt(hoursStr);
-            }
-
-            if (duration.contains("minute")) {
-                String minsStr = duration.substring(duration.indexOf("hour") > 0 ?
-                        duration.indexOf("hour") + 4 : 0, duration.indexOf("minute")).trim();
-                minsStr = minsStr.replaceAll("[^0-9]", "").trim();
-                minutes = Integer.parseInt(minsStr);
-            }
-
-            return hours * 60 + minutes;
-        } catch (Exception e) {
-            return 240; // Default to max if parsing fails
-        }
-    }
-
-    private void clearAllFilters() {
-        if (searchView != null) {
-            searchView.setQuery("", false);
-        }
-        showsAdapter.updateList(allShows);
-    }
-
-    private void filterShows(String query, List<String> categories) {
-        List<Show> filteredShows = new ArrayList<>();
-
-        for (Show show : allShows) {
-            boolean matchesSearch = query.isEmpty() ||
-                    show.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                    show.getShortDescription().toLowerCase().contains(query.toLowerCase());
-
-            boolean matchesCategory = categories == null ||
-                    categories.contains(show.getCategory());
-
-            if (matchesSearch && matchesCategory) {
-                filteredShows.add(show);
-            }
-        }
-
-        showsAdapter.updateList(filteredShows);
     }
 
     @Override
